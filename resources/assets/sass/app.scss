@@ -1,0 +1,40 @@
+
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.row.custom {
+    margin-right: 0;
+}
+
+#main-content {
+       /*width: 100%;*/ 
+       min-height: 500px; 
+       background-color: white; 
+       border-radius: 10px; 
+       /*padding: 10px;*/
+}
+
+#main-title {
+    margin-top: 45px;
+    color: white; 
+    text-shadow: 2px 2px darkblue;
+}
+
+#section-title {
+    width: 100% !important; 
+}
+
+.fa {cursor: pointer;}
+.fa-pencil {color: #005cbf;}
+.fa-trash-o {color: red;}
