@@ -25,7 +25,8 @@
       <div class="swanky_wrapper__content">
         <ul>
           <a href="{{ url('documentos') }}"><li>Nuevo documento</li></a>
-          <a href="{{ url('historial') }}"><li>Historial</li></a>
+          <a href="{{ url('historial') }}"><li>Revisión</li></a>
+          <a href="{{ url('publicacion') }}"><li>Publicación</li></a>
         </ul>
       </div>
     </label>
@@ -37,7 +38,6 @@
       <div class="bar"></div>
       <div class="swanky_wrapper__content">
         <ul>
-          <a href="{{ url('reportes/documentos') }}"><li>Documentos</li></a>
           <a href="{{ url('reportes/avance') }}"><li>Avance</li></a>
         </ul>
       </div>

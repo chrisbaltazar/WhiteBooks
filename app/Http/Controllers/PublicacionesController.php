@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Documento;
-use App\Comentario;
-use App\Version;
-use App\Entidad;
+use Illuminate\Support\Facades\Storage;
 
-
-class ComentariosController extends Controller
+class PublicacionesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,9 +16,8 @@ class ComentariosController extends Controller
      */
     public function index()
     {
-        return view('comentarios.index');
+        return view('publicaciones.index');
     }
-    
 
     /**
      * Show the form for creating a new resource.
@@ -29,14 +26,19 @@ class ComentariosController extends Controller
      */
     public function create()
     {
-        if(auth()->user()->rol_id == 5) 
-            $entities = Entidad::where('id', auth()->user()->entidad_id)->get();
-        else
-            $entities = Entidad::orderBy('Nombre')->get();
+        //
+    }
+    
+    public function download($id) {
         
-        return response()->json([
-            'entities'  => $entities
-        ]);
+        $file = Documento::findOrFail($id);
+        
+        $ext =  (explode(".", $file->resumen));
+        
+        $name = "Resumen_" . $file->nombre . "." . end($ext);
+        
+        return Storage::disk('public')->download($file->resumen, $name);
+        
     }
 
     /**
@@ -47,19 +49,19 @@ class ComentariosController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'version_id'    => 'required|numeric',
-            'contenido' => 'required'
-        ]);
+        $doc = Documento::findOrFail($request->id);
         
-        $comment = new Comentario($request->all());
-        $comment->save();
+        $file = $request->file('file');
+      
+        $nombre = $file->getClientOriginalName();
+
+        $path = Storage::disk('public')->putFile('uploaded', $file);
         
-        $doc = Documento::find($comment->version->documento_id);
-        $doc->estatus_id = 0;
+        $doc->resumen = $path;
+        $doc->estatus_id = 2;
         $doc->save();
         
-        
+        sleep(1);
     }
 
     /**
@@ -70,11 +72,13 @@ class ComentariosController extends Controller
      */
     public function show($id)
     {
-        $documents = Version::where('documento_id', $id)->orderBy('id', 'desc')->with('autor')->get();
+        $documents = Documento::where('estatus_id', '>', 0)
+                                ->where('entidad_id', $id)
+                                ->orderBy('created_at', 'desc')
+                                ->with(['usuario', 'estatus'])->get();
         
         return response()->json([
-            'documents' => $documents, 
-            'path'      => asset('/')
+            'documents' => $documents
         ]);
     }
 
@@ -98,11 +102,7 @@ class ComentariosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $doc = Documento::findOrFail($id);
-        
-        $doc->estatus_id = 1;
-        
-        $doc->save();
+        //
     }
 
     /**

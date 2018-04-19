@@ -1,20 +1,19 @@
 <template>
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="false">
             <div class="carousel-inner">
-                <div  v-for="(doc, index) in documents"  class="carousel-item" :class ="{active: index == 0}" v-if="index > -1">
+                <div  v-for="(doc, index) in documents"  class="carousel-item" :class ="{active: index == 1}" v-if="index > 0">
                     <center> 
-                        <i class="fa fa-file-word-o fa-5x d-block w-100"></i> 
+                        <a :href ="'/documentos/download/' + doc.id" target ="_blank"><i class="fa fa-file-word-o fa-5x d-block w-100"></i></a>
+                        <br>
                         <h3><span class="badge badge-pill badge-dark">{{ doc.autor.Nombre }} ({{ doc.created_at | dateFormat }})</span></h3>
                     </center>
                 </div>
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="sr-only">Previous</span>
+            <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+                <button class="btn btn-default"><i class="fa fa-arrow-circle-o-left"></i> Anterior</button>
             </a>
-            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="sr-only">Next</span>
+            <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                <button class="btn btn-default">Siguiente <i class="fa fa-arrow-circle-o-right"></i></button>
             </a>
     </div>
 </template>
@@ -30,6 +29,7 @@
         created() {
             this.$http.get('/historial/' + this.modalData).then(response => {
                 this.documents = response.data.documents;
+                this.path = response.data.path;
             }, error => {
                Wrong(DisplayErrors(error)); 
             });

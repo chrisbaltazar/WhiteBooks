@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Filesystem\Filesystem;
 
 use App\Documento;
 use App\Version;
+use App\Entidad;
 
 class DocumentosController extends Controller
 {
@@ -20,11 +22,29 @@ class DocumentosController extends Controller
         return redirect()->route('documentos.create');
     }
     
-    public function load() {
+    public function load($id) {
 
-        $documents = Documento::where('entidad_id', auth()->user()->entidad_id)->orderBy('created_at', 'desc')->with('usuario')->get();
+        if(auth()->user()->rol_id == 5){
+            $documents = Documento::where('estatus_id', '<', 2)->where('entidad_id', auth()->user()->entidad_id)->where('created_by', auth()->user()->id)->orderBy('created_at', 'desc')->with(['usuario', 'estatus'])->get();
+        }else{
+            $documents = Documento::where('estatus_id', '<', 2)->where('entidad_id', $id)->orderBy('created_at', 'desc')->with(['usuario', 'estatus'])->get();
+        }
         
-        return response()->json(['documents' => $documents]);
+        return response()->json([
+            'documents' => $documents
+        ]);
+    }
+    
+    public function download($id) {
+        
+        $file = Version::findOrFail($id);
+        
+        $ext =  (explode(".", $file->ruta));
+        
+        $name = $file->documento->nombre . "_Ver_$file->version" . "." . end($ext);
+        
+        return Storage::disk('public')->download($file->ruta, $name);
+        
     }
 
     /**
@@ -56,13 +76,14 @@ class DocumentosController extends Controller
 
         $path = Storage::disk('public')->putFile('uploaded', $file);
         
-        if($request->id)
+        if($request->id){
             $document = Documento::findOrFail($request->id);
-        else
+        }else{
             $document = new Documento();
-        
+            $document->entidad_id = auth()->user()->entidad_id;
+        }
         $document->nombre = $request->name;
-        $document->entidad_id = auth()->user()->entidad_id;
+        $document->estatus_id = 0;
         $document->save();
         
         $version = new Version();
@@ -101,7 +122,11 @@ class DocumentosController extends Controller
      */
     public function edit($id)
     {
-        $document = Documento::where('id', $id)->where('entidad_id', auth()->user()->entidad_id)->firstOrFail();
+        
+        if(auth()->user()->rol_id == 5)
+            $document = Documento::where('id', $id)->where('entidad_id', auth()->user()->entidad_id)->firstOrFail();
+        else 
+            $document = Documento::findOrFail($id);
         
         return view('documentos.index')->with('document', $document);
 
@@ -116,7 +141,7 @@ class DocumentosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
     }
 
     /**
@@ -127,6 +152,7 @@ class DocumentosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $doc = Documento::where('id', $id)->where('entidad_id', auth()->user()->entidad_id)->first();
+        $doc->delete();
     }
 }

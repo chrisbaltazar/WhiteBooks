@@ -4,21 +4,27 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/Users/christian/www/LibrosBlancos/app/Rol.php</file>
+            <file>file:/Users/christian/www/LibrosBlancos/app/Comentario.php</file>
+            <file>file:/Users/christian/www/LibrosBlancos/app/Http/Controllers/PublicacionesController.php</file>
             <file>file:/Users/christian/www/LibrosBlancos/resources/views/usuarios/usu_index.blade.php</file>
             <file>file:/Users/christian/www/LibrosBlancos/resources/assets/js/app.js</file>
+            <file>file:/Users/christian/www/LibrosBlancos/resources/views/comentarios/index.blade.php</file>
+            <file>file:/Users/christian/www/LibrosBlancos/app/Estatus.php</file>
             <file>file:/Users/christian/www/LibrosBlancos/resources/assets/sass/app.scss</file>
             <file>file:/Users/christian/www/LibrosBlancos/app/Documento.php</file>
+            <file>file:/Users/christian/www/LibrosBlancos/app/Http/Controllers/ComentariosController.php</file>
             <file>file:/Users/christian/www/LibrosBlancos/routes/web.php</file>
-            <file>file:/Users/christian/www/LibrosBlancos/app/Http/Controllers/EntidadesController.php</file>
+            <file>file:/Users/christian/www/LibrosBlancos/resources/assets/js/components/versions.component.vue</file>
+            <file>file:/Users/christian/www/LibrosBlancos/resources/views/documentos/index.blade.php</file>
             <file>file:/Users/christian/www/LibrosBlancos/public/js/fn.js</file>
-            <file>file:/Users/christian/www/LibrosBlancos/resources/views/entidades/index.blade.php</file>
             <file>file:/Users/christian/www/LibrosBlancos/app/Http/Controllers/UsuariosController.php</file>
-            <file>file:/Users/christian/www/LibrosBlancos/resources/assets/js/components/user.component.vue</file>
             <file>file:/Users/christian/www/LibrosBlancos/app/Entidad.php</file>
             <file>file:/Users/christian/www/LibrosBlancos/resources/assets/js/components/entity.component.vue</file>
+            <file>file:/Users/christian/www/LibrosBlancos/app/Version.php</file>
             <file>file:/Users/christian/www/LibrosBlancos/resources/views/modal.blade.php</file>
-            <file>file:/Users/christian/www/LibrosBlancos/resources/views/home.blade.php</file>
+            <file>file:/Users/christian/www/LibrosBlancos/package.json</file>
             <file>file:/Users/christian/www/LibrosBlancos/resources/views/menu2.blade.php</file>
+            <file>file:/Users/christian/www/LibrosBlancos/app/Http/Controllers/DocumentosController.php</file>
             <file>file:/Users/christian/www/LibrosBlancos/app/Usuario.php</file>
             <file>file:/Users/christian/www/LibrosBlancos/resources/views/base.blade.php</file>
         </group>

@@ -25,7 +25,8 @@ class LoginController extends Controller
         
         
         $user = Usuario::where('Correo', $request->username)->where('Password', md5($request->pass))->first();
-               
+        
+//        dd($user);
         
         if($user){
 //            dd($user->id);

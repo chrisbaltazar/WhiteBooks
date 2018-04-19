@@ -20,4 +20,8 @@ class Version extends Model
     public function autor() {
         return $this->belongsTo('App\Usuario', 'created_by');
     }
+    
+    public function documento() {
+        return $this->belongsTo('App\Documento', 'documento_id');
+    }
 }

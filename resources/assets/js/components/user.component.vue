@@ -9,11 +9,11 @@
                 <label>Correo</label>
                 <input type="email" class="form-control" v-model="user.Correo" required>
             </div>
-            <div class="form-group" v-if="!this.user.id || this.changePwd">
+            <div class="form-group" v-if="!user.id || changePwd">
                 <label>Password</label>
                 <input type="password" class="form-control" v-model="user.Password" required>
             </div>
-            <div class="form-group" v-if="!this.user.id || this.changePwd">
+            <div class="form-group" v-if="!user.id || changePwd">
                 <label>Confirme</label>
                 <input type="password" class="form-control" v-model="user.Password_confirmation" required>
             </div>
@@ -40,10 +40,10 @@
             </div>
             <p>
                 <button class="btn btn-success btn-lg" ><i class="fa fa-save"></i> Guardar</button>
-                <button class="btn btn-info btn-lg" v-if="user.length"><i class="fa fa-lock" @click="changePwd = true"></i> Cambiar contraseña</button>
+                <button class="btn btn-info btn-lg" v-if="user.id && !changePwd" @click.prevent="changePwd = true"><i class="fa fa-lock"></i> Cambiar contraseña</button>
             </p>
-            
         </form>
+        
     </div>
 </template>
 
@@ -64,9 +64,14 @@
               return '/usuarios/' + (this.modalData ? this.modalData + "/edit" : "create");
           }
         },
-        methods: {
+        methods: { 
+           doChange() {
+               alert("CLICK");
+               this.changePwd = !this.changePwd;
+           },
            saveUser(event) {
-               LoadButton($(event.target).find('button'));
+               
+               LoadButton($(event.target).find('button:first'));
                if(this.modalData){
                     this.$http.put('/usuarios/' + this.modalData,  this.user).then(
                      response => {
@@ -96,8 +101,10 @@
         created(){
             
                 this.$http.get(this.url).then(response => {
-                    if(this.modalData)
+                    if(this.modalData){
                         this.user = response.data.user;
+                        this.user.Password = "";
+                    }
                     this.roles = response.data.roles;
                     this.entidades = response.data.entidades;
                     this.all = response.data.all;

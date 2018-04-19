@@ -132,9 +132,16 @@ class UsuariosController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'Correo' => 'required|email|max:255', 
+            'Password' => 'required|max:255|confirmed', 
+            'entidad_id' => 'required', 
+            'Nombre' => 'required|max:255'
+        ]);
+        
         $user = Usuario::find($id);
         $user->fill($request->all());
-        if($request->password)
+        if($request->Password)
             $user->Password = md5($request->Password);
         $user->save();
     }

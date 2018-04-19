@@ -125,11 +125,17 @@ function CloseModal(){
     $('#myModal').modal('hide').attr('closing', '1');
 }
 
-function DoSelect(obj, change){
+function DoSelectVue(obj, change){
     $(obj).select2({
             width: 'element',
             placeholder: "Seleccione..."
-    }).on('change', function(e){ (change?change():null); });
+    }).on('change', function(e){ 
+//        console.log(e);
+//        console.log(e.target);
+//        console.log(e.val);
+//        vm = e.val;
+        if(change) change(e);
+    });
 }
 
 function MultiSelect(obj, headerLeft, headerRight, searchable, selected){

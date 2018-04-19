@@ -29,8 +29,6 @@
             <link rel="stylesheet" type="text/css" href="{{asset('js/select2/select2.css')}}">
             <link rel="stylesheet" type="text/css" href="{{asset('js/summernote/summernote.css')}}">
             <link rel="stylesheet" type="text/css" href="{{asset('js/sweetalert/dist/sweetalert.css')}}">
-            <link rel="stylesheet" type="text/css" href="{{asset('js/sidecomments/side-comments.css')}}">
-            <link rel="stylesheet" type="text/css" href="{{asset('js/sidecomments/themes/default-theme.min.css')}}">
             
     <!--===============================================================================================-->
             @yield('style')
@@ -78,7 +76,6 @@
 <           <script src="{{asset('js/select2/select2.js')}}"></script>
             <script src="{{asset('js/summernote/summernote.js')}}"></script>
             <script src="{{asset('js/sweetalert/dist/sweetalert2.all.js')}}"></script>
-            <script src="{{asset('js/sidecomments/side-comments.js')}}"></script>
             <script src="{{asset('js/fn.js')}}"></script>
             
             @yield('script')

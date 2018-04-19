@@ -21,7 +21,11 @@ Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Route::resource('/usuarios', 'UsuariosController')->middleware('auth');
 Route::resource('/entidades', 'EntidadesController')->middleware('auth');
 
-Route::get('/documentos/load', 'DocumentosController@load')->middleware('auth')->name('documentos.load');
+Route::get('/documentos/load/{id}', 'DocumentosController@load')->middleware('auth')->name('documentos.load');
+Route::get('/documentos/download/{id}', 'DocumentosController@download')->middleware('auth')->name('documentos.download');
 Route::resource('/documentos', 'DocumentosController')->middleware('auth');
 
 Route::resource('/historial', 'ComentariosController')->middleware('auth');
+
+Route::get('/publicacion/download/{id}', 'PublicacionesController@download')->middleware('auth')->name('publicacion.download');
+Route::resource('/publicacion', 'PublicacionesController')->middleware('auth');

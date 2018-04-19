@@ -22,4 +22,12 @@ class Usuario extends Authenticatable
     public function Rol(){
         return $this->belongsTo('App\Rol', 'rol_id')->withDefault();
     }
+    
+    public function getValidateAttribute() {
+        return in_array($this->rol_id, array("3", "2", "1"));
+    }
+    
+    public function getReviewAttribute() {
+        return in_array($this->rol_id, array(4));
+    }
 }

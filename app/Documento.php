@@ -25,4 +25,12 @@ class Documento extends Model
     public function comentarios() {
         return $this->hasManyThrough('App\Comentario', 'App\Version');
     }
+    
+    public function estatus() {
+        return $this->belongsTo('App\Estatus', 'estatus_id');
+    }
+    
+    public function getCurrentVersionAttribute() {
+        return $this->versiones()->orderBy('version', 'desc')->first()->id;
+    }
 }

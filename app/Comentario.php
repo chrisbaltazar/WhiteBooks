@@ -22,4 +22,5 @@ class Comentario extends Model
     public function autor() {
         return $this->belongsTo('App\Usuario', 'created_by');
     }
+    
 }

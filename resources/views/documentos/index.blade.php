@@ -22,7 +22,7 @@
         <div class="card-body">
             <div class="form-control">
                 <label>Nombre</label>
-                <input type="text" class="form-control" v-model="documentName" placeholder="Nombre del documento" {{ isset($document) ? 'disabled' : 'required' }}>
+                <input type="text" class="form-control" v-model="documentName" placeholder="Nombre del documento" required >
             </div>
         </div>
     </div>
@@ -35,8 +35,6 @@
     <button class="btn btn-success btn-lg mx-auto"><i class="fa fa-upload"></i> Subir archivo</button>
        
 </form>
-
-<!--<a href ="{{asset('storage/uploaded/eN6nHsMitzPivZgX4AwoN7owQrZlPMHdwNyPD7Q6.pdf')}}">Link</a>-->
 
 
 @endsection
@@ -61,9 +59,8 @@
                this.$http.post('{{ url('documentos') }}', formData).then(response => {
                    Ready();
                    OK("Guardado");
-                   this.documentName = "";
-                   this.documentId = "";
-                   $('#file').val('');
+                   location.href = "{{url('/historial')}}";
+
                }, error => {
                    Ready();
                    Wrong(DisplayErrors(error));

@@ -20,10 +20,14 @@ import VueResource from 'vue-resource';
 Vue.use(VueResource);
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
 
+import vSelect from 'vue-select';
+
+Vue.component('v-select', vSelect);
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('app-user', require('./components/user.component.vue'));
 Vue.component('app-entity', require('./components/entity.component.vue'));
 Vue.component('app-versions', require('./components/versions.component.vue'));
+
 
 Vue.filter('dateFormat', (value, onlyDate) => { 
    if (value) {
