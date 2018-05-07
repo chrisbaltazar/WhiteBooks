@@ -32,7 +32,7 @@ class LoginController extends Controller
 //            dd($user->id);
             Auth::loginUsingId($user->id);
 //            dd(auth());
-            return redirect('/home');
+            return redirect()->intended('/');
         }
         
         return redirect('/');

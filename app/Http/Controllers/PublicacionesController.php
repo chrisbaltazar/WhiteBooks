@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Documento;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\App;
 
 class PublicacionesController extends Controller
 {
@@ -26,18 +27,30 @@ class PublicacionesController extends Controller
      */
     public function create()
     {
-        //
+        
     }
     
-    public function download($id) {
+    public function download($id, $document) {
         
         $file = Documento::findOrFail($id);
         
-        $ext =  (explode(".", $file->resumen));
+        if($document == "resumen"){
         
-        $name = "Resumen_" . $file->nombre . "." . end($ext);
+            $ext =  (explode(".", $file->resumen));
+
+            $name = "Resumen_" . $file->nombre . "." . end($ext);
+            
+            $path = $file->resumen;
+            
+        }else{
+            
+            $name = str_replace("documents/", "", $file->final);
+            
+            $path = $file->final;
+            
+        }
         
-        return Storage::disk('public')->download($file->resumen, $name);
+        return Storage::disk('public')->download($path, $name);
         
     }
 
@@ -49,17 +62,8 @@ class PublicacionesController extends Controller
      */
     public function store(Request $request)
     {
-        $doc = Documento::findOrFail($request->id);
         
-        $file = $request->file('file');
-      
-        $nombre = $file->getClientOriginalName();
-
-        $path = Storage::disk('public')->putFile('uploaded', $file);
         
-        $doc->resumen = $path;
-        $doc->estatus_id = 2;
-        $doc->save();
         
         sleep(1);
     }
@@ -113,6 +117,16 @@ class PublicacionesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $doc = Documento::findOrFail($id);
+        $doc->estatus_id = 1;
+        $doc->resumen = null; 
+        $doc->final = null; 
+        $doc->published_at = null; 
+        $doc->published_by = null; 
+        $doc->save();
     }
+    
+    
+
+    
 }

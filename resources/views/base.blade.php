@@ -8,6 +8,7 @@
             
             <meta id ="token" name="csrf-token" content="{{ csrf_token() }}">
 
+            <link rel="shortcut icon" href="{{asset('favicon.ico')}}" type="image/x-icon" />
             <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css">
     
             <link rel="stylesheet" type="text/css" href="{{asset('css/font-awesome-4.7.0/css/font-awesome.min.css')}}">
@@ -27,8 +28,10 @@
             
             <link rel="stylesheet" type="text/css" href="{{asset('js/dhtmlx/dhtmlx.css')}}">
             <link rel="stylesheet" type="text/css" href="{{asset('js/select2/select2.css')}}">
+            <link rel="stylesheet" type="text/css" href="{{asset('js/multiselect/css/multi-select.css')}}">
             <link rel="stylesheet" type="text/css" href="{{asset('js/summernote/summernote.css')}}">
             <link rel="stylesheet" type="text/css" href="{{asset('js/sweetalert/dist/sweetalert.css')}}">
+            <link rel="stylesheet" type="text/css" href="{{asset('js/dataTables/css/jquery.dataTables.min.css')}}">
             
     <!--===============================================================================================-->
             @yield('style')
@@ -42,7 +45,6 @@
                     @include('header')
                 </div>
                 <div class="row custom" id ="main-content">
-                    
                         <div class="col-2" style="padding: 0">
                             @include('menu2')
                         </div>
@@ -74,8 +76,11 @@
 <           <script src="{{asset('js/dhtmlx/dhtmlx.js')}}"></script>
 <           <script src="{{asset('js/dhtmlx/dhtmlxgrid_export.js')}}"></script>
 <           <script src="{{asset('js/select2/select2.js')}}"></script>
+<           <script src="{{asset('js/multiselect/js/jquery.multi-select.js')}}"></script>
+<           <script src="{{asset('js/jquery.quicksearch.js')}}"></script>
             <script src="{{asset('js/summernote/summernote.js')}}"></script>
             <script src="{{asset('js/sweetalert/dist/sweetalert2.all.js')}}"></script>
+            <script src="{{asset('js/dataTables/jquery.dataTables.min.js')}}"></script>
             <script src="{{asset('js/fn.js')}}"></script>
             
             @yield('script')

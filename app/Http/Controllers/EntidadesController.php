@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Entidad;
+use App\Usuario;
 
 class EntidadesController extends Controller
 {
@@ -29,7 +30,18 @@ class EntidadesController extends Controller
      */
     public function create()
     {
+        if(auth()->user()->isPublisher()) 
+            $entities = Entidad::orderBy('Nombre')->get();
+        elseif(auth()->user()->isSuper())
+            $entities = Usuario::find(auth()->user()->id)->entidades()->get();
+        elseif(auth()->user()->isReviewer())
+            $entities = Usuario::find(auth()->user()->padre_id)->entidades()->get();
+        elseif(auth()->user()->isUser()) 
+            $entities = Entidad::where('id', auth()->user()->entidad_id)->get();
         
+        return response()->json([
+            'entities'  => $entities
+        ]);
     }
 
     /**

@@ -9,9 +9,9 @@
     @include('modal')
     <div class="form-group">
         <p>
-            <button class="btn btn-primary pull-right" 
+            <button class="btn btn-primary pull-right  mb-2" 
                    @click="newEntity">
-                    <i class="fa fa-user-plus"></i> 
+                    <i class="fa fa-plus"></i> 
                     Nueva entidad
             </button>
         </p>

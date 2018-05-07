@@ -13,4 +13,12 @@ class Entidad extends Model
     
     protected $table = "entidades";
     protected $guarded = ['id'];
+    
+    public function usuarios() {
+        return $this->belongsToMany('App\Usuario', "entidad_usuario");
+    }
+    
+    public function documentos() {
+        return $this->hasMany('App\Documento', 'entidad_id');
+    }
 }

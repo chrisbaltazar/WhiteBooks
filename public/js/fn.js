@@ -61,11 +61,12 @@ function Modal(url, title, cls, fn){
      
 }
 
-function ModalComponent(vueObj, cls){
+function ModalComponent(vueObj, cls, fn){
     Mask();
     $('#myModal .modal-dialog').removeClass('modal-lg, modal-sm').addClass(cls?cls:"");
     $('#myModal').modal('show').on('shown.bs.modal', function(){
        Ready();
+       if(fn) fn();
     }).on('hidden.bs.modal', function(){
        vueObj.component = "";  
        vueObj.modalData = "";  

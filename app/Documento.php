@@ -30,7 +30,12 @@ class Documento extends Model
         return $this->belongsTo('App\Estatus', 'estatus_id');
     }
     
+    public function entidad() {
+        return $this->belongsTo('App\Entidad', 'entidad_id');
+    }
+
+    
     public function getCurrentVersionAttribute() {
-        return $this->versiones()->orderBy('version', 'desc')->first()->id;
+        return $this->versiones()->orderBy('version', 'desc')->first()->version;
     }
 }

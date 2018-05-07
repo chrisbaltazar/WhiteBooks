@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 use App\Usuario;
 use App\Rol;
 use App\Entidad;
@@ -20,9 +22,10 @@ class UsuariosController extends Controller
         $params[] = array("Header" => "Ver", "Width" => "50", "Attach" => "", "Align" => "center", "Sort" => "str", "Type" => "ro");
         $params[] = array("Header" => "Borrar", "Width" => "50", "Attach" => "", "Align" => "center", "Sort" => "str", "Type" => "ro");
         $params[] = array("Header" => "Nombre", "Width" => "*", "Attach" => "txt", "Align" => "left", "Sort" => "str", "Type" => "ed");
-        $params[] = array("Header" => "Correo", "Width" => "*", "Attach" => "txt", "Align" => "left", "Sort" => "str", "Type" => "ed");
+        $params[] = array("Header" => "Correo", "Width" => "150", "Attach" => "txt", "Align" => "left", "Sort" => "str", "Type" => "ed");
         $params[] = array("Header" => "Entidad", "Width" => "*", "Attach" => "txt", "Align" => "left", "Sort" => "str", "Type" => "ed");
-        $params[] = array("Header" => "Rol", "Width" => "*", "Attach" => "txt", "Align" => "left", "Sort" => "str", "Type" => "ed");
+        $params[] = array("Header" => "Rol", "Width" => "100", "Attach" => "txt", "Align" => "left", "Sort" => "str", "Type" => "ed");
+        $params[] = array("Header" => "Atiende", "Width" => "*", "Attach" => "txt", "Align" => "left", "Sort" => "str", "Type" => "ed");
         
         
         return view('usuarios.usu_index')->with('params', $params);
@@ -40,7 +43,7 @@ class UsuariosController extends Controller
         $all = Usuario::where('rol_id', '3')->orderBy('Nombre')->get();
         
         $entities = Entidad::orderBy('Nombre')->get();
-        
+       
         return response()->json([
                     'roles' => $roles, 
                     'all' => $all, 
@@ -57,15 +60,21 @@ class UsuariosController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'Correo' => 'required|email|max:255|unique:usuarios,deleted_at,null', 
+            'Correo' => 'required|email|max:255', 
             'Password' => 'required|max:255|confirmed'
         ]);
+       
+        if(!Usuario::where('Correo', $request->Correo)->first()){
         
-        $user = new Usuario($request->all());
-        $user->Password = md5($request->Password);
-        $user->save();
+            $user = new Usuario($request->all());
+            $user->Nombre = UpperCase($request->Nombre);
+            $user->Password = md5($request->Password);
+            $user->save();
+            
+        }else{
+            abort(403, "Este correo ya se encuentra en uso");
+        }
 
-//        Usuario::updateOrCreate(['id' => $request->id], $request->all());
         
     }
 
@@ -91,6 +100,12 @@ class UsuariosController extends Controller
             $xml.= "<cell>" .($d->Correo)."</cell>";
             $xml.= "<cell>" .($d->Entidad->Nombre)."</cell>";
             $xml.= "<cell>" .($d->Rol->NombreRol)."</cell>";
+            if($d->isSuper())
+                $xml.= "<cell>" .($d->entidades->pluck('Nombre')->implode(','))."</cell>";
+            elseif($d->isReviewer())
+                $xml.= "<cell>" .(Usuario::find($d->padre_id)->entidades->pluck('Nombre')->implode(','))."</cell>";
+            else
+                $xml.= "<cell></cell>";
             $xml.= "</row>";
         }
             
@@ -115,11 +130,16 @@ class UsuariosController extends Controller
         
         $entities = Entidad::orderBy('Nombre')->get();
         
+        $relations = $user->entidades()->pluck('entidad_id')->toArray();
+        
+//        dd($relations);
+        
         return response()->json([
                     'user' => $user, 
                     'roles' => $roles, 
                     'all' => $all, 
-                    'entidades' => $entities
+                    'entidades' => $entities, 
+                    'relations' => $relations
                 ]);
     }
 
@@ -134,16 +154,23 @@ class UsuariosController extends Controller
     {
         $request->validate([
             'Correo' => 'required|email|max:255', 
-            'Password' => 'required|max:255|confirmed', 
             'entidad_id' => 'required', 
             'Nombre' => 'required|max:255'
         ]);
         
-        $user = Usuario::find($id);
-        $user->fill($request->all());
-        if($request->Password)
-            $user->Password = md5($request->Password);
-        $user->save();
+        if(!Usuario::where('Correo', $request->Correo)->where('id', '<>', $id)->first()){
+        
+            $user = Usuario::find($id);
+            $user->fill($request->all());
+            $user->Nombre = UpperCase($request->Nombre);
+            if($request->Password)
+                $user->Password = md5($request->Password);
+            $user->save();
+            $user->entidades()->sync($request->entidades);
+            
+        }else{
+            abort(403, "Este correo ya se encuentra en uso");
+        }
     }
 
     /**

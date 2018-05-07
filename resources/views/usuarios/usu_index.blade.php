@@ -8,7 +8,7 @@
     @include('modal')
     <div class="form-group">
         <p>
-            <button class="btn btn-primary pull-right" 
+            <button class="btn btn-primary mb-3 pull-right" 
                    @click="newUser">
                     <i class="fa fa-user-plus"></i> 
                     Nuevo usuario
@@ -56,13 +56,19 @@
             newUser(){
                 this.modalTitle = "Nuevo usuario";
                 this.component = "app-user";
-                ModalComponent(this);
+                ModalComponent(this, null, function(){
+                    MultiSelect($('#cmbSuper'), 'Seleccione', 'Incluidos', true);
+                });
+
             }, 
             View(id){
                 this.modalTitle = "Editar usuario";
                 this.component = "app-user";
                 this.modalData = id;
-                ModalComponent(this);
+                ModalComponent(this, null, function(){
+                    MultiSelect($('#cmbSuper'), 'Seleccione', 'Incluidos', true);
+                });
+                
             }, 
             Delete(id){
                 const self = this;

@@ -31,10 +31,10 @@ Vue.component('app-versions', require('./components/versions.component.vue'));
 
 Vue.filter('dateFormat', (value, onlyDate) => { 
    if (value) {
-        if(onlyDate == '1')
-            return moment(String(value)).format('DD/MM/YYYY');
+        if(onlyDate)
+            return moment(String(value)).format('DD.MM.YYYY');
         else
-            return moment(String(value)).format('DD/MM/YYYY HH:mm');
+            return moment(String(value)).format('DD.MM.YYYY HH:mm');
    }
 });
 

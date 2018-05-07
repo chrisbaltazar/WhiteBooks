@@ -1,5 +1,10 @@
 <?php 
-
+    function insertMail($remit, $mail, $subject, $content, $name = null){
+        Illuminate\Support\Facades\DB::connection('intranet')->insert("
+            insert into enviacorreos (Fecha_Creacion, Fecha_Programada, Remitente, Correo, Nombre, Asunto, Contenido) values(NOW(), NOW(), ?, ?, ?, ?, ?)", 
+            [$remit, $mail, $name, $subject, $content]
+        );
+    }
    
     function validateTime($time){
         $exp = explode(":", $time);

@@ -23,4 +23,17 @@ class Comentario extends Model
         return $this->belongsTo('App\Usuario', 'created_by');
     }
     
+    public function estatus() {
+        switch($this->autor->rol_id){
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                return "Observaciones";
+                break;
+            case 5:
+                return "Actualizado";
+                break;
+        }
+    }
 }

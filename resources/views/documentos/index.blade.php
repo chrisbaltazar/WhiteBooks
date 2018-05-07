@@ -7,15 +7,17 @@
 
 
 <form id ="uploader" @submit.prevent="uploadFile($event)"> 
-    <div class="alert alert-{{ isset($document) ? 'danger' : 'dark' }}">
-        @if(isset($document)) 
+    
+    <div v-if="documentId" class="alert alert-danger">
         <h3 class="">Usted esta cargando una nueva versión del archivo: <br>
-            <i class="fa fa-quote-left"></i> {{$document->nombre}} <i class="fa fa-quote-right"></i>
+            <i class="fa fa-quote-left"></i> @{{ documentName }} <i class="fa fa-quote-right"></i>
+            <br> <small>(versión @{{ documentType == 'extended' ? "extendida" : "ejecutiva" }})</small>
         </h3>
-        @else 
-        <h3 class="text-center">Usted esta cargando un nuevo archivo</h3>
-        @endif
-   </div>
+    </div>
+    <div v-else class="alert alert-dark">
+         <h3 class="text-center">Usted esta cargando un nuevo archivo 
+         <br> <small>(versión extendida)</small></h3>
+    </div>
     
     <div class="card">
         <div class="card-header bg-success text-white">Datos del documento</div>
@@ -45,6 +47,7 @@
     var v = new Vue({
         el: '#uploader', 
         data: {
+            documentType: '{{ $type }}',
             documentId: '{{ isset($document) ? $document->id : '' }}',
             documentName: '{{ isset($document) ? $document->nombre : "" }}'
         }, 
@@ -54,13 +57,15 @@
                const formData = new FormData();
                formData.append("id", this.documentId);
                formData.append("name", this.documentName);
+               formData.append("type", this.documentType);
                formData.append("file", file.files[0]);
                LoadButton($(event.target).find('button'));
                this.$http.post('{{ url('documentos') }}', formData).then(response => {
                    Ready();
                    OK("Guardado");
-                   location.href = "{{url('/historial')}}";
-
+                   setTimeout(function(){
+                       location.href = "{{url('/historial')}}";
+                   }, 2000);
                }, error => {
                    Ready();
                    Wrong(DisplayErrors(error));

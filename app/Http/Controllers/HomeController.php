@@ -13,6 +13,17 @@ class HomeController extends Controller
      */
     public function index()
     {   
+//        if(auth()->user()->isDirector()) 
+//            $entities = Entidad::orderBy('Nombre')->get();
+//        elseif(auth()->user()->isSuper())
+//            $entities = Usuario::find(auth()->user()->id)->entidades()->get();
+//        elseif(auth()->user()->isReviewer())
+//            $entities = Usuario::find(auth()->user()->padre_id)->entidades()->get();
+//        elseif(auth()->user()->isUser()) 
+//            $entities = Entidad::where('id', auth()->user()->entidad_id)->get();
+        
+        
+        
         return view('home');
     }
 
